@@ -17,7 +17,7 @@ public class Main {
             int cisloRadku = 1;
 
             while ((radek = br.readLine()) != null) {
-                System.out.println("\n[Řádek " + cisloRadku + "] " + radek);
+                System.out.println("[Řádek " + cisloRadku + "] " + radek);
 
                 if (validator.jePlatnyRadek(radek)) {
                     System.out.println("VÝSLEDEK: VALIDNÍ");
@@ -44,7 +44,7 @@ public class Main {
             System.out.println("Chyba při čtení souboru: " + e.getMessage());
         }
 
-        System.out.println("\n=================================");
+        System.out.println("=================================");
         System.out.println("SEZNAM PLATNÝCH VĚZŇŮ (Příjmení + Rok narození):");
         System.out.println("=================================");
         for (Vezen v : platniVezni) {

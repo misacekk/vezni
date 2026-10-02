@@ -7,8 +7,6 @@
     <list default="true" id="3c9c725a-05dd-4ec7-92f8-4c25e31e1af6" name="Changes" comment="e">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Vezen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Vezen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/VezenValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/VezenValidator.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,7 +87,7 @@
       <updated>1789981210661</updated>
       <workItem from="1789981211715" duration="1543000" />
       <workItem from="1790929880350" duration="3552000" />
-      <workItem from="1790935412004" duration="97000" />
+      <workItem from="1790935412004" duration="162000" />
     </task>
     <task id="LOCAL-00001" summary="e">
       <option name="closed" value="true" />
@@ -107,7 +105,15 @@
       <option name="project" value="LOCAL" />
       <updated>1790933342032</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="e">
+      <option name="closed" value="true" />
+      <created>1790935531392</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1790935531392</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
