@@ -1,20 +1,16 @@
-import java.time.LocalDate;
-
 public class Vezen {
-    private String jmeno;
-    private String prijmeni;
-    private LocalDate datumNarozeni;
+    private String jmenoPrijmeni;
+    private String datumNarozeni;
     private String telefon;
     private String email;
     private String mesto;
     private String ulice;
-    private int cisloPopisne;
+    private String cisloPopisne;
     private String psc;
 
-    public Vezen(String jmeno, String prijmeni, LocalDate datumNarozeni, String telefon,
-                 String email, String mesto, String ulice, int cisloPopisne, String psc) {
-        this.jmeno = jmeno;
-        this.prijmeni = prijmeni;
+    public Vezen(String jmenoPrijmeni, String datumNarozeni, String telefon,
+                 String email, String mesto, String ulice, String cisloPopisne, String psc) {
+        this.jmenoPrijmeni = jmenoPrijmeni;
         this.datumNarozeni = datumNarozeni;
         this.telefon = telefon;
         this.email = email;
@@ -24,43 +20,18 @@ public class Vezen {
         this.psc = psc;
     }
 
-    public String getJmeno() {
-        return jmeno;
-    }
-
     public String getPrijmeni() {
-        return prijmeni;
+        String[] casti = jmenoPrijmeni.split(" ");
+        return casti[casti.length - 1];
     }
 
-    public LocalDate getDatumNarozeni() {
-        return datumNarozeni;
+    public String getRokNarozeni() {
+        String[] casti = datumNarozeni.split("\\.");
+        return casti[2];
     }
 
-    public int getRokNarozeni() {
-        return datumNarozeni.getYear();
-    }
-
-    public String getTelefon() {
-        return telefon;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getMesto() {
-        return mesto;
-    }
-
-    public String getUlice() {
-        return ulice;
-    }
-
-    public int getCisloPopisne() {
-        return cisloPopisne;
-    }
-
-    public String getPsc() {
-        return psc;
+    @Override
+    public String toString() {
+        return jmenoPrijmeni + " (" + datumNarozeni + ")";
     }
 }

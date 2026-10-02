@@ -1,96 +1,93 @@
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.regex.Pattern;
 
 public class VezenValidator {
 
-    private static final String REGEX_JMENO = "^[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ][a-záčďéěíňóřšťúůýž]+\\s[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ][a-záčďéěíňóřšťúůýž]+$";
-    private static final String REGEX_TELEFON = "^\\+420\\s\\d{3}\\s\\d{3}\\s\\d{3}$";
-    private static final String REGEX_EMAIL = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
-    private static final String REGEX_MESTO_ULICE = "^[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ][a-zA-ZáčďéěíňóřšťúůýžÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ\\s]*$";
-    private static final String REGEX_CISLO_POPISNE = "^[1-9]\\d*$";
-    private static final String REGEX_PSC = "^\\d{3}\\s\\d{2}$";
+    private Pattern patternJmeno = Pattern.compile("^[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ][a-záčďéěíňóřšťúůýž]+\\s+[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ][a-záčďéěíňóřšťúůýž]+$");
+    private Pattern patternTelefon = Pattern.compile("^\\+420 \\d{3} \\d{3} \\d{3}$");
+    private Pattern patternEmail = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+    private Pattern patternMestoUlice = Pattern.compile("^[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ][a-zA-Zá-žÁ-Ž\\s]*$");
+    private Pattern patternCisloPopisne = Pattern.compile("^[1-9]\\d*$");
+    private Pattern patternPsc = Pattern.compile("^\\d{3} \\d{2}$");
 
-    public static List<String> zkontrolujRadek(String radek) {
-        List<String> chyby = new ArrayList<>();
-
-        String[] prvky = radek.split(";", -1);
-
-        if (prvky.length != 8) {
-            chyby.add("špatný počet údajů na řádku");
-            return chyby;
+    public boolean jePlatnyRadek(String radek) {
+        if (radek == null || radek.trim().isEmpty()) {
+            System.out.println("Chyba: Prázdný řádek!");
+            return false;
         }
 
-        String jmenoPrijmeni = prvky[0].trim();
-        String datumStr = prvky[1].trim();
-        String telefon = prvky[2].trim();
-        String email = prvky[3].trim();
-        String mesto = prvky[4].trim();
-        String ulice = prvky[5].trim();
-        String cisloPopisneStr = prvky[6].trim();
-        String psc = prvky[7].trim();
+        String[] udaje = radek.split(";", -1);
 
-        if (!jmenoPrijmeni.matches(REGEX_JMENO)) {
-            chyby.add("neplatné jméno a příjmení");
+        if (udaje.length != 8) {
+            System.out.println("Chyba: Špatný počet údajů (očakáváno 8, nalezeno " + udaje.length + ")");
+            return false;
         }
 
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d.M.yyyy");
-            LocalDate d = LocalDate.parse(datumStr, formatter);
+        boolean jeVseOk = true;
 
-            if (!d.format(formatter).equals(datumStr)) {
-                chyby.add("neplatné datum narození");
+        String jmeno = udaje[0].trim();
+        String datum = udaje[1].trim();
+        String telefon = udaje[2].trim();
+        String email = udaje[3].trim();
+        String mesto = udaje[4].trim();
+        String ulice = udaje[5].trim();
+        String cisloPopisne = udaje[6].trim();
+        String psc = udaje[7].trim();
+
+        if (!patternJmeno.matcher(jmeno).matches()) {
+            System.out.println("Neplatné jméno a příjmení: " + jmeno);
+            jeVseOk = false;
+        }
+
+        if (!datum.matches("^\\d{1,2}\\.\\d{1,2}\\.\\d{4}$")) {
+            System.out.println("Špatný formát data narození: " + datum);
+            jeVseOk = false;
+        } else {
+            try {
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("d.M.yyyy");
+                LocalDate datumNarozeni = LocalDate.parse(datum, dtf);
+
+                if (datumNarozeni.isAfter(LocalDate.now())) {
+                    System.out.println("Datum narození nemůže být v budoucnosti: " + datum);
+                    jeVseOk = false;
+                }
+            } catch (Exception e) {
+                System.out.println("Neexistující datum v kalendáři: " + datum);
+                jeVseOk = false;
             }
-        } catch (Exception e) {
-            chyby.add("neplatné datum narození");
         }
 
-        if (!telefon.matches(REGEX_TELEFON)) {
-            chyby.add("neplatný telefon");
+        if (!patternTelefon.matcher(telefon).matches()) {
+            System.out.println("Neplatný telefon: " + telefon);
+            jeVseOk = false;
         }
 
-        if (!email.matches(REGEX_EMAIL)) {
-            chyby.add("neplatný e-mail");
+        if (!patternEmail.matcher(email).matches()) {
+            System.out.println("Neplatný e-mail: " + email);
+            jeVseOk = false;
         }
 
-        if (!mesto.matches(REGEX_MESTO_ULICE)) {
-            chyby.add("neplatné město");
+        if (!patternMestoUlice.matcher(mesto).matches()) {
+            System.out.println("Neplatné město: " + mesto);
+            jeVseOk = false;
         }
 
-        if (!ulice.matches(REGEX_MESTO_ULICE)) {
-            chyby.add("neplatná ulice");
+        if (!patternMestoUlice.matcher(ulice).matches()) {
+            System.out.println("Neplatná ulice: " + ulice);
+            jeVseOk = false;
         }
 
-        if (!cisloPopisneStr.matches(REGEX_CISLO_POPISNE)) {
-            chyby.add("neplatné číslo popisné");
+        if (!patternCisloPopisne.matcher(cisloPopisne).matches()) {
+            System.out.println("Neplatné číslo popisné: " + cisloPopisne);
+            jeVseOk = false;
         }
 
-        if (!psc.matches(REGEX_PSC)) {
-            chyby.add("neplatné PSČ");
+        if (!patternPsc.matcher(psc).matches()) {
+            System.out.println("Neplatné PSČ: " + psc);
+            jeVseOk = false;
         }
 
-        return chyby;
-    }
-
-    public static Vezen vytvorVezne(String radek) {
-        String[] prvky = radek.split(";");
-        String[] jmenoAPrijmeni = prvky[0].trim().split(" ");
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d.M.yyyy");
-        LocalDate datum = LocalDate.parse(prvky[1].trim(), formatter);
-        int cisloPopisne = Integer.parseInt(prvky[6].trim());
-
-        return new Vezen(
-                jmenoAPrijmeni[0],
-                jmenoAPrijmeni[1],
-                datum,
-                prvky[2].trim(),
-                prvky[3].trim(),
-                prvky[4].trim(),
-                prvky[5].trim(),
-                cisloPopisne,
-                prvky[7].trim()
-        );
+        return jeVseOk;
     }
 }
